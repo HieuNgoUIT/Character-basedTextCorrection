@@ -92,33 +92,33 @@ w2v = Word2Vec(sentences=kq, size=100, window=4, iter=10)
 #print(vector)
 
 #for index, k in enumerate(vocab.keys()):
+"""
+find distance between 2 words
+# """
+# charw1 = prepare_sequence("hello")
+# charw2 = prepare_sequence("hello")
 
-charw1 = prepare_sequence("hello")
-charw2 = prepare_sequence("hello")
+# print(charw1)
+# print(type(charw1))
+# print(charw2)
 
-print(charw1)
-print(type(charw1))
-print(charw2)
+# wordVector = np.zeros((1,100))
+# for i in charw1:
+#     print("sum",wordVector.shape)
+#     print("cha",w2v.wv[i].shape)
+#     wordVector = np.add(wordVector, w2v.wv[i])
+#     print(i)
 
-wordVector = np.zeros((1,100))
-for i in charw1:
-    print("sum",wordVector.shape)
-    print("cha",w2v.wv[i].shape)
-    wordVector = np.add(wordVector, w2v.wv[i])
-    print(i)
+# wordVector2 = np.zeros((1,100))
+# for i in charw2:
+#     print("sum",wordVector2.shape)
+#     print("cha",w2v.wv[i].shape)
+#     wordVector2 = np.add(wordVector2, w2v.wv[i])
+#     print(i)
 
-wordVector2 = np.zeros((1,100))
-for i in charw2:
-    print("sum",wordVector2.shape)
-    print("cha",w2v.wv[i].shape)
-    wordVector2 = np.add(wordVector2, w2v.wv[i])
-    print(i)
-
-from scipy import spatial
-
-
-result = 1 - spatial.distance.cosine(wordVector, wordVector2)
-print(result)  
+# from scipy import spatial
+# result = 1 - spatial.distance.cosine(wordVector, wordVector2)
+# print(result)  
 #print(w2v.wv['h'])
 #print(w2v.wv[['h']])
 
@@ -128,3 +128,21 @@ print(result)
 # print(w2v.wv['e'][:2])
 # print(w2v.wv['ll'][:2])
 # print(w2v.wv['o'][:2])
+"""
+________________________________________________________________
+"""
+sumVector = np.zeros((1,100))
+WandV = {}
+for w in words: 
+    print(w)
+    chars = prepare_sequence(w)
+    for c in chars:
+        print(chars)
+        try:
+            vectorInVocab = w2v.wv[c]
+            sumVector = np.add(sumVector, vectorInVocab)
+        except:
+            sumVector = None      
+    WandV[w] = sumVector
+    sumVector = np.zeros((1,100))
+print(len(WandV))
