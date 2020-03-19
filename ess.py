@@ -133,16 +133,76 @@ ________________________________________________________________
 """
 sumVector = np.zeros((1,100))
 WandV = {}
+#print(w2v.wv['p'])
+#print(type(w2v.wv['p']))
 for w in words: 
-    print(w)
+    #print(w)
     chars = prepare_sequence(w)
     for c in chars:
-        print(chars)
+        #print(chars)
         try:
             vectorInVocab = w2v.wv[c]
             sumVector = np.add(sumVector, vectorInVocab)
         except:
-            sumVector = None      
-    WandV[w] = sumVector
+            sumVector = None    
+    try:
+        WandV[w] = sumVector.flatten()
+    except:
+        WandV[w] = np.zeros(100)  
+    #print(sumVector.flatten())
+    #print(sumVector.flatten().shape)
+    #print(type(sumVector.flatten()))
     sumVector = np.zeros((1,100))
-print(len(WandV))
+
+#print(len(WandV))
+#print(WandV['pressure'])
+#X = np.array((WandV.values()))
+#print(len(WandV.values()))
+#print(WandV.values())
+import pandas as pd
+df = pd.DataFrame()
+
+for i in WandV.values():
+    #print(pd.DataFrame(i))
+    df = df.append(pd.Series(i), ignore_index=True)
+#print("temp head",df.head())
+#print("temp shape", df.shape)
+
+
+from sklearn.neighbors.ball_tree import BallTree
+
+tree = BallTree(df, leaf_size=2)
+
+dist, ind = tree.query(df[:1], k=3)                # doctest: +SKIP
+print(ind)  # indices of 3 closest neighbors
+#[0 3 1]
+print(dist)  # distances to 3 closest neighbors
+#[ 0.          0.19662693  0.29473397]
+
+v1 = df.iloc[0,:]
+v2 = df.iloc[363,:]
+v3 = df.iloc[3774,:]
+
+V1 = np.array(v1)
+V2 = np.array(v2)
+V3 = np.array(v3)
+
+# print(V1)
+
+# print(WandV['The'])
+
+
+#print(v1)
+#print(type(v1))
+
+for k,v in WandV.items():
+    comparison = v == V1
+    if comparison.all() == True:
+        print(k)
+    comparison2 = v == V2
+    if comparison2.all() == True:
+        print(k)
+    comparison3 = v == V3
+    if comparison3.all() == True:
+        print(k)        
+    
