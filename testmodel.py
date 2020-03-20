@@ -1,15 +1,25 @@
 from gensim.models import Word2Vec
 import numpy as np 
-vnese = ['a', 'ă', 'â', 'e', 'ê', 'i', 'o', 'ô', 'ơ', 'u', 'ư', 'y'\
-              'A', 'Ă', 'Â', 'E', 'Ê', 'I', 'O', 'Ô', 'Ơ', 'U', 'Ư', 'Y']
+vnese = ['a', 'á', 'à', 'ả', 'ã', 'ạ', \
+         'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ', \
+         'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', \
+         'e', 'é', 'è', 'ẻ', 'ẽ', 'ẹ', \
+         'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ', \
+         'i', 'í', 'ì', 'ỉ', 'ĩ', 'ị', \
+         'o', 'ó', 'ò', 'ỏ', 'õ', 'ọ', \
+         'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', \
+         'u', 'ú', 'ù', 'ủ', 'ũ', 'ụ', \
+         'ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự', \
+         'y']              
 en = ['a', 'i', 'u', 'e', 'o', 'A', 'I', 'U', 'E', 'O']
 
 def prepare_sequence(words):
     if words == None: return ""
     vowels = vnese 
     my_list = []
-    word = words.split("_")            
+    word = words.split("_")           
     for w in word:
+        w = w.lower()
         l = len(w)
         try :
             result = w[0]
@@ -24,6 +34,7 @@ def prepare_sequence(words):
                 result = result + w[character]
         my_list.append(list([result]))
     return my_list
+    
 import os
 entries = os.listdir("./corpus.viwiki/mysmalltest")
 #print(entries)
