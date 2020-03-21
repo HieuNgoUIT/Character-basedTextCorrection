@@ -37,11 +37,10 @@ def prepare_sequence(words):
     
 import os
 entries = os.listdir("./corpus.viwiki/mysmalltest")
-#print(entries)
 data = ""
 for entry in entries:
     path = "./corpus.viwiki/mysmalltest/" + entry
-    with open(path) as f:
+    with open(path, encoding="utf8") as f:
         currentdata = f.read()
     data = data + currentdata
 print("Loading data from file .........")
@@ -54,11 +53,15 @@ print("Loading data from file .........")
 
 from pyvi import ViTokenizer
 
+print('Preprocessing word .....')
 wordsstr = ViTokenizer.tokenize(data).lower()
 words = wordsstr.split(" ")
 
-model = Word2Vec.load("word2vec.model")
+print('Loading word2vec model......')
+model = Word2Vec.load("word2vec.model") #character to vec
 
+
+print('Creating word vector in vocabulary....')
 sumVector = np.zeros((1,100))
 WandV = {}
 for w in words: 
@@ -95,6 +98,8 @@ for i in WandV.values():
 #print(df.shape)
 df = df[(df.T != 0).all()]
 #print(df.shape)
+
+print('Training model KNN .........')
 from sklearn.neighbors.ball_tree import BallTree
 
 tree = BallTree(df, leaf_size=2)
@@ -102,7 +107,7 @@ tree = BallTree(df, leaf_size=2)
 #print(df.shape) # 7839 100
 
 
-index = np.expand_dims(df.iloc[17,:], axis =0)
+index = np.expand_dims(df.iloc[69,:], axis =0)
 
 dist, ind = tree.query(index, k=3)                # doctest: +SKIP
 print(ind)  # indices of 3 closest neighbors
